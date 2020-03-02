@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import os
 import pathlib
 import shutil
 import subprocess
@@ -65,6 +66,14 @@ def build_oniguruma(environment):
         extension.library_dirs.append(str(oniguruma_path))
 
         shutil.copy(oniguruma_path / "onig.dll", "onig/_onig_cffi/onig.dll")
+    elif sys.platform == "linux":
+            subprocess.check_call(["autoreconf", "-vfi"], cwd=oniguruma_path, env=environment)
+            subprocess.check_call(["./configure"], cwd=oniguruma_path, env=environment)
+            subprocess.check_call(["make"], cwd=oniguruma_path, env=environment)
+
+            extension.extra_objects.append(
+                str(oniguruma_path / "src" / ".libs" / "libonig.a")
+            )
     else:
         raise Exception(f"cannot build Oniguruma for platform {sys.platform!r}")
 
@@ -72,6 +81,8 @@ def build_oniguruma(environment):
 class BuildExtensions(build_ext):
     def build_extensions(self):
         DEPS_PATH.mkdir(exist_ok=True)
+
+        download_oniguruma()
 
         if sys.platform == "win32":
             from distutils import _msvccompiler
@@ -82,8 +93,14 @@ class BuildExtensions(build_ext):
 
             vc_env = _msvccompiler._get_vc_env(platform_spec)
 
-            download_oniguruma()
+            
             build_oniguruma(environment=vc_env)
+        elif sys.platform == "linux":
+            environ = dict(os.environ)
+            if 'CFLAGS' not in environ:
+                environ['CFLAGS'] = ''
+            environ['CFLAGS'] += ' -fPIC'
+            build_oniguruma(environment=environ)
         else:
             raise Exception(f"cannot build Oniguruma for platform {sys.platform!r}")
 

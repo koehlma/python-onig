@@ -1,0 +1,34 @@
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache"
+
+cache:
+  untracked: true
+  key: python-onig-cache
+  paths:
+    - .cache/
+    - deps
+
+checks:
+  stage: build
+  image: python:latest
+  script:
+    - pip install poetry
+    - poetry install
+
+
+.manylinux-build-wheels:
+    stage: build
+    script:
+        - ./helpers/ci-build-manylinux-wheels.sh
+    artifacts:
+        paths:
+            - wheels
+
+manylinux1-x86_64:
+    extends:
+        - .manylinux-build-wheels
+    image: quay.io/pypa/manylinux1_x86_64
+    variables:
+        PLATFORM: manylinux1_x86_64
+        PYTHON_HOME: /opt/python/cp38-cp38/
