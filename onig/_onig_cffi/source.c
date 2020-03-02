@@ -1,12 +1,5 @@
 #include <oniguruma.h>
 
-int onig_cffi_initialize(void) {
-    OnigEncoding encodings[] = {
-        ONIG_ENCODING_UTF8
-    };
-    return onig_initialize(encodings, 1);
-}
-
 int onig_cffi_new(
     OnigRegex *regex,
     const OnigUChar *pattern,
