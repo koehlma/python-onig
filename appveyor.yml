@@ -1,0 +1,25 @@
+environment:
+  matrix:
+    - PYTHON_HOME: "C:\\Python38"
+    - PYTHON_HOME: "C:\\Python38-x64"
+
+
+install:
+  - ECHO "Filesystem root:"
+  - ps: "ls \"C:/\""
+
+  - ECHO "Installed SDKs:"
+  - ps: "ls \"C:/Program Files/Microsoft SDKs/Windows\""
+
+  - "SET PATH=%PYTHON_HOME%;%PYTHON_HOME%\\Scripts;%PYTHON_HOME%\\bin;%PATH%"
+  - "python --version"
+  - "python -m ensurepip"
+  - "pip install poetry"
+  - "poetry install"
+
+build_script:
+  - "SET APPVEYOR=True"
+  - "poetry build"
+
+artifacts:
+  - path: dist\*
