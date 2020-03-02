@@ -2,6 +2,11 @@ variables:
   GIT_SUBMODULE_STRATEGY: recursive
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache"
 
+stages:
+  - test
+  - build
+  - deploy
+
 cache:
   untracked: true
   key: python-onig-cache
@@ -18,28 +23,27 @@ checks:
 
 
 .manylinux-build-wheels:
-    stage: build
-    script:
-        - ./helpers/ci-build-manylinux-wheels.sh
-    artifacts:
-        paths:
-            - wheels
+  image: quay.io/pypa/manylinux1_x86_64
+  stage: build
+  script:
+    - ./helpers/ci-build-manylinux-wheels.sh
+  artifacts:
+    paths:
+      - wheels
 
-manylinux1-x86_64:
+manylinux1-cp38-x86_64:
     extends:
         - .manylinux-build-wheels
-    image: quay.io/pypa/manylinux1_x86_64
     variables:
         PLATFORM: manylinux1_x86_64
         PYTHON_HOME: /opt/python/cp38-cp38/
 
 
-manylinux1-i686:
-    extends:
-        - .manylinux-build-wheels
-    image: quay.io/pypa/manylinux1_i686
-    variables:
-        PLATFORM: manylinux1_i686
-        PYTHON_HOME: /opt/python/cp38-cp38/
-    before_script:
-        - yum install redhat-rpm-config gcc libffi-devel python-devel openssl-devel -y
+deploy-wheels:
+  stage: deploy
+  image: python:latest
+  dependencies:
+    - manylinux1-cp38-x86_64
+  script:
+    - pip install twine
+    - twine upload -u $PYPI_USER -p $PYPI_PASS --skip-existing wheels/*.whl
