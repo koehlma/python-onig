@@ -2,22 +2,13 @@ environment:
   global:
     PYPI_USER: koehlma
     PYPI_PASS:
-      secure: +P3od+i9tlN8YdMfoZGOQBFQ1ogjUGFmNEQNa9KfO60=
+      secure: fNXSRnU45IOyN9G3z7RuslLSEXjW4qSHZdV7o1F7/Nc=
   matrix:
     - PYTHON: "C:\\Python38"
     - PYTHON: "C:\\Python38-x64"
 
 
 install:
-  - ECHO "Filesystem root:"
-  - ps: "ls \"C:/\""
-
-  - ECHO "Environment variables:"
-  - ps: "Get-ChildItem Env:"
-
-  - ECHO "Installed SDKs:"
-  - ps: "ls \"C:/Program Files/Microsoft SDKs/Windows\""
-
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PYTHON%\\bin;%PATH%"
   - "python --version"
   - "python -m ensurepip"
