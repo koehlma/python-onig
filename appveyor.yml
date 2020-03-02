@@ -1,7 +1,8 @@
 environment:
-  PYPI_USER: koehlma
-  PYPI_PASS:
-    secure: n+2j1eN/d9gXnVm0jIDnzA==
+  global:
+    PYPI_USER: koehlma
+    PYPI_PASS:
+      secure: n+2j1eN/d9gXnVm0jIDnzA==
   matrix:
     - PYTHON: "C:\\Python38"
     - PYTHON: "C:\\Python38-x64"
@@ -10,6 +11,9 @@ environment:
 install:
   - ECHO "Filesystem root:"
   - ps: "ls \"C:/\""
+
+  - ECHO "Environment variables:"
+  - ps: "Get-ChildItem Env:"
 
   - ECHO "Installed SDKs:"
   - ps: "ls \"C:/Program Files/Microsoft SDKs/Windows\""
@@ -26,6 +30,8 @@ build_script:
 
 deploy_script:
   - ps: ./helpers/appveyor-deploy-pypi.ps1
+
+deploy: on
 
 artifacts:
   - path: dist\*
