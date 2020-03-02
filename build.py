@@ -56,11 +56,11 @@ def build_oniguruma(environment):
     with tarfile.open(ONIGURUMA_TAR_GZ, "r:gz") as oniguruma_tar_gz:
         oniguruma_tar_gz.extractall(path=ONIGURUMA_BUILD)
     oniguruma_path = next(ONIGURUMA_BUILD.glob("oniguruma-*"))
+    extension.include_dirs.append(str(oniguruma_path / "src"))
     if sys.platform == "win32":
         subprocess.check_call(
             ["make_win.bat"], shell=True, cwd=oniguruma_path, env=environment
         )
-        extension.include_dirs.append(str(oniguruma_path / "src"))
         extension.libraries.append("onig")
         extension.library_dirs.append(str(oniguruma_path))
 
