@@ -13,12 +13,16 @@ cache:
     - .cache/
     - deps
 
-checks:
+build:
   stage: build
   image: python:latest
   script:
     - pip install poetry
     - poetry install
+    - poetry build -f sdist
+  artifacts:
+    paths:
+      - dist
 
 
 .manylinux-build-wheels:
@@ -44,7 +48,8 @@ deploy-wheels:
   only:
     - tags
   dependencies:
+    - build
     - manylinux1-cp38-x86_64
   script:
     - pip install twine
-    - twine upload -u $PYPI_USER -p $PYPI_PASS --skip-existing wheels/*.whl
+    - twine upload -u $PYPI_USER -p $PYPI_PASS --skip-existing wheels/*.whl dist/*.tar.gz
