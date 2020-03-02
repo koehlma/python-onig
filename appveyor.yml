@@ -17,6 +17,7 @@ install:
 
 build_script:
   - "SET APPVEYOR=True"
+  - ps: Copy-Item ./helpers/fix-poetry-tags.py -Destination "${Env:PYTHON}\\lib\\site-packages\\poetry\\masonry\\utils\\tags.py" -force
   - "poetry build"
 
 deploy_script:

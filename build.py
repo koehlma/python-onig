@@ -67,13 +67,15 @@ def build_oniguruma(environment):
 
         shutil.copy(oniguruma_path / "onig.dll", "onig/_onig_cffi/onig.dll")
     elif sys.platform == "linux":
-            subprocess.check_call(["autoreconf", "-vfi"], cwd=oniguruma_path, env=environment)
-            subprocess.check_call(["./configure"], cwd=oniguruma_path, env=environment)
-            subprocess.check_call(["make"], cwd=oniguruma_path, env=environment)
+        subprocess.check_call(
+            ["autoreconf", "-vfi"], cwd=oniguruma_path, env=environment
+        )
+        subprocess.check_call(["./configure"], cwd=oniguruma_path, env=environment)
+        subprocess.check_call(["make"], cwd=oniguruma_path, env=environment)
 
-            extension.extra_objects.append(
-                str(oniguruma_path / "src" / ".libs" / "libonig.a")
-            )
+        extension.extra_objects.append(
+            str(oniguruma_path / "src" / ".libs" / "libonig.a")
+        )
     else:
         raise Exception(f"cannot build Oniguruma for platform {sys.platform!r}")
 
@@ -93,13 +95,12 @@ class BuildExtensions(build_ext):
 
             vc_env = _msvccompiler._get_vc_env(platform_spec)
 
-            
             build_oniguruma(environment=vc_env)
         elif sys.platform == "linux":
             environ = dict(os.environ)
-            if 'CFLAGS' not in environ:
-                environ['CFLAGS'] = ''
-            environ['CFLAGS'] += ' -fPIC'
+            if "CFLAGS" not in environ:
+                environ["CFLAGS"] = ""
+            environ["CFLAGS"] += " -fPIC"
             build_oniguruma(environment=environ)
         else:
             raise Exception(f"cannot build Oniguruma for platform {sys.platform!r}")
