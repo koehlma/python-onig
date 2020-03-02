@@ -25,7 +25,7 @@ build_script:
   - "poetry build"
 
 deploy_script:
-  - ps: & helpers/appveyor-deploy-pypi.ps1
+  - ps: ./helpers/appveyor-deploy-pypi.ps1
 
 artifacts:
   - path: dist\*
