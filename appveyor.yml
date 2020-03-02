@@ -2,7 +2,7 @@ environment:
   global:
     PYPI_USER: koehlma
     PYPI_PASS:
-      secure: n+2j1eN/d9gXnVm0jIDnzA==
+      secure: +P3od+i9tlN8YdMfoZGOQBFQ1ogjUGFmNEQNa9KfO60=
   matrix:
     - PYTHON: "C:\\Python38"
     - PYTHON: "C:\\Python38-x64"
