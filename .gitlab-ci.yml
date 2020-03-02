@@ -8,7 +8,6 @@ stages:
   - deploy
 
 cache:
-  untracked: true
   key: python-onig-cache
   paths:
     - .cache/
