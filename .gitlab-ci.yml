@@ -3,7 +3,6 @@ variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache"
 
 stages:
-  - test
   - build
   - deploy
 
@@ -42,7 +41,7 @@ manylinux1-cp38-x86_64:
         PYTHON_HOME: /opt/python/cp38-cp38/
 
 
-deploy-wheels:
+twine-upload:
   stage: deploy
   image: python:latest
   only:
