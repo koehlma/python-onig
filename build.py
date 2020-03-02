@@ -62,10 +62,10 @@ def build_oniguruma(environment):
         subprocess.check_call(
             ["make_win.bat"], shell=True, cwd=oniguruma_path, env=environment
         )
-        extension.libraries.append("onig")
+        extension.libraries.append("onig_s")
         extension.library_dirs.append(str(oniguruma_path))
 
-        shutil.copy(oniguruma_path / "onig.dll", "onig/_onig_cffi/onig.dll")
+        # shutil.copy(oniguruma_path / "onig.dll", "onig/_onig_cffi/onig.dll")
     elif sys.platform == "linux":
         subprocess.check_call(
             ["autoreconf", "-vfi"], cwd=oniguruma_path, env=environment
@@ -94,6 +94,10 @@ class BuildExtensions(build_ext):
             platform_spec = _msvccompiler.PLAT_TO_VCVARS[platform_name]
 
             vc_env = _msvccompiler._get_vc_env(platform_spec)
+
+            # if "CL" not in vc_env:
+            #     vc_env["CL"] = ""
+            # vc_env["CL"] += " /DONIGURUMA_EXPORT="
 
             build_oniguruma(environment=vc_env)
         elif sys.platform == "linux":

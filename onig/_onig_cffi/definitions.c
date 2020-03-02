@@ -46,7 +46,7 @@ typedef struct re_registers {
 typedef struct { ...; } OnigErrorInfo;
 
 
-int onig_initialize(OnigEncoding [], int);
+extern int onig_initialize(OnigEncoding [], int);
 
 
 OnigRegion *onig_region_new(void);

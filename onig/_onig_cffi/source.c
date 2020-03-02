@@ -1,3 +1,5 @@
+#define ONIG_EXTERN extern
+
 #include <oniguruma.h>
 
 int onig_cffi_new(
