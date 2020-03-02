@@ -41,6 +41,8 @@ manylinux1-cp38-x86_64:
 deploy-wheels:
   stage: deploy
   image: python:latest
+  only:
+    - tags
   dependencies:
     - manylinux1-cp38-x86_64
   script:
