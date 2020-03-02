@@ -10,7 +10,7 @@ import subprocess
 import sys
 import tarfile
 
-from distutils.command.build_ext import build_ext
+from distutils.command.build_ext import build_ext  # type: ignore
 
 from urllib import request
 
@@ -19,7 +19,10 @@ import cffi
 
 DEPS_PATH = pathlib.Path("deps")
 
-ONIGURUMA_URL = "https://github.com/kkos/oniguruma/archive/v6.9.4.tar.gz"
+
+ONIGURUMA_VERSION = "6.9.4"
+
+ONIGURUMA_URL = f"https://github.com/kkos/oniguruma/archive/v{ONIGURUMA_VERSION}.tar.gz"
 
 ONIGURUMA_TAR_GZ = DEPS_PATH / "oniguruma.tar.gz"
 ONIGURUMA_BUILD = DEPS_PATH / "oniguruma_build"

@@ -4,11 +4,14 @@
 
 from __future__ import annotations
 
-# try:
-#     from .onig import ffi, lib
-# except ImportError:
-from .build import builder
+try:
+    from ._onig_cffi import ffi, lib
+except ImportError:
+    from .build import builder
 
-builder.compile()
-from .onig import ffi, lib
+    builder.compile()
 
+    from ._onig_cffi import ffi, lib
+
+
+__all__ = ["ffi", "lib"]

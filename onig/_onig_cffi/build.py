@@ -14,22 +14,11 @@ from cffi import FFI
 DEFINITIONS = resources.read_text(__package__, "definitions.c")
 SOURCE = resources.read_text(__package__, "source.c")
 
-ONIG_DIRECTORY = (pathlib.Path(__file__).parent.parent.parent / "onig-6.9.4").absolute()
-
-
 builder = FFI()
 builder.cdef(DEFINITIONS)
 
-builder.set_source(
-    "onig._onig_cffi.onig",
-    SOURCE,
-    libraries=["onig"],
-    include_dirs=[str(ONIG_DIRECTORY / "src")],
-    # extra_objects=["onig-6.9.4/onig.obj"]
-    library_dirs=[str(ONIG_DIRECTORY)],
-)
+builder.set_source("onig._onig_cffi.onig", SOURCE, libraries=["onig"])
 
 
 if __name__ == "__main__":
     builder.compile()
-
