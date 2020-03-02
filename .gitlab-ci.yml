@@ -42,4 +42,4 @@ manylinux1-i686:
         PLATFORM: manylinux1_i686
         PYTHON_HOME: /opt/python/cp38-cp38/
     before_script:
-        - yum install redhat-rpm-config gcc libffi-devel python-devel openssl-devel
+        - yum install redhat-rpm-config gcc libffi-devel python-devel openssl-devel -y
