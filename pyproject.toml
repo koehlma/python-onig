@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "onig"
-version = "0.0.5"
+version = "0.0.6"
 description = "A Python wrapper around the Oniguruma regular expression library."
 authors = [
     "Maximilian Köhl <mkoehl@cs.uni-saarland.de>"
